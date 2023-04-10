@@ -5,28 +5,28 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>HouseKeeper App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to HouseKeeper!
         </h1>
 
         <p className={styles.description}>
-          Get started by editing <code>pages/index.js</code>
+          Get started by adding your fridge contents or creating a grocery list.
         </p>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
+          <a href="/fridge" className={styles.card}>
+            <h3>Your Fridge and Pantry &rarr;</h3>
+            <p>See ingredients in your fridge and pantry and their expiry date.</p>
           </a>
 
           <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
+            <h3>Grocery list &rarr;</h3>
+            <p>Your weekly list minus what you already have in your fridge and pantry.</p>
           </a>
 
           <a
