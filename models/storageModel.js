@@ -4,6 +4,7 @@ const storageSchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique: true
     },
   foodItemIds: [{type: Schema.Types.ObjectID, ref: 'foodItem'}]
 });

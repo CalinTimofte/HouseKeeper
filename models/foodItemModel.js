@@ -4,6 +4,7 @@ const foodItemSchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique: true
     },
   expirationDate:{
     type: Date,
