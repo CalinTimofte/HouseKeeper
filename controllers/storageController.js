@@ -64,9 +64,25 @@ async function addFoodItemToStorage(req, res) {
     }
 }
 
+async function getAllStorage(req, res) {
+    try {
+    console.log('CONNECTING TO MONGO');
+    await connectMongo();
+    console.log('CONNECTED TO MONGO');
+
+    const test = await Storage.find({});
+
+    res.json({ test });
+    } catch (error) {
+    console.log(error);
+    res.json({ error });
+    }
+}
+
 const storageController = {
     addStorage,
-    addFoodItemToStorage
+    addFoodItemToStorage,
+    getAllStorage
 }
 
 export default storageController;
