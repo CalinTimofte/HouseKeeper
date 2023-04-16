@@ -44,6 +44,7 @@ async function addFoodItemToStorage(req, res) {
         FoodItem.findOne({name: req.body.foodItem})
         .then((foodItem) => {
             console.log(foodItem);
+            // addToSet is a mongoose thingy that ensures no duplicates in an array
             Storage.updateOne({name: storage.name}, {$addToSet: {foodItemIds: foodItem._id}})
             .catch(function (err) {
                 console.log(err);
