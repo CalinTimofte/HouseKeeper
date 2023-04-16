@@ -65,9 +65,45 @@ async function addFoodItemToStorage(req, res) {
     }
 }
 
+async function getAllStorage(req, res) {
+    try {
+    console.log('CONNECTING TO MONGO');
+    await connectMongo();
+    console.log('CONNECTED TO MONGO');
+
+    const storages = await Storage.find({});
+
+    res.json({ storages });
+    } catch (error) {
+    console.log(error);
+    res.json({ error });
+    }
+}
+
+async function getStorageByName(req, res) {
+    //Request should look like this:
+    // {
+    //   "name": "fridge"
+    // }
+    try {
+    console.log('CONNECTING TO MONGO');
+    await connectMongo();
+    console.log('CONNECTED TO MONGO');
+
+    const storage = await Storage.findOne({name: req.body.name});
+
+    res.json({ storage });
+    } catch (error) {
+    console.log(error);
+    res.json({ error });
+    }
+}
+
 const storageController = {
     addStorage,
-    addFoodItemToStorage
+    addFoodItemToStorage,
+    getAllStorage,
+    getStorageByName
 }
 
 export default storageController;

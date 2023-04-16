@@ -3,6 +3,7 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.scss';
 import connectMongo from '../utils/connectMongo';
 import Test from '../models/testModel.js';
+import { useRouter } from 'next/router';
 
 export const getServerSideProps = async () => {
   try {
@@ -28,6 +29,11 @@ export const getServerSideProps = async () => {
 };
 
 export default function Home({ tests }) {
+  // Example of refreshing when db data will be updated
+  const router = useRouter();
+  const refreshData = () => {
+    router.replace(router.asPath);
+  }
   const createTest = async () => {
     const randomNum = Math.floor(Math.random() * 1000);
     const res = await fetch('/api/test/add', {
@@ -42,6 +48,9 @@ export default function Home({ tests }) {
     });
     const data = await res.json();
     console.log(data);
+    if (res.status < 300) {
+      refreshData();
+    }
   };
   return (
     <div className={styles.container}>
