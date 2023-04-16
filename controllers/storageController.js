@@ -44,10 +44,7 @@ async function addFoodItemToStorage(req, res) {
         FoodItem.findOne({name: req.body.foodItem})
         .then((foodItem) => {
             console.log(foodItem);
-            let newFoodItemIds = storage.foodItemIds;
-            newFoodItemIds.push(foodItem._id);
-            console.log(newFoodItemIds);
-            Storage.updateOne({name: storage.name}, {foodItemIds: newFoodItemIds})
+            Storage.updateOne({name: storage.name}, {$addToSet: {foodItemIds: foodItem._id}})
             .catch(function (err) {
                 console.log(err);
               });

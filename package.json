@@ -12,6 +12,8 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "sass": "^1.61.0"
+    "@types/react": "18.0.35",
+    "sass": "^1.61.0",
+    "typescript": "5.0.4"
   }
 }
