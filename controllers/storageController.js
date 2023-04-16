@@ -117,12 +117,36 @@ async function deleteStorageByName(req, res) {
     }
 }
 
+async function updateStorageNameByName(req, res) {
+    //Request should look like this:
+    // {
+    //  "oldName": "fridge",
+    //  "newName": "fridgeroni"
+    // }
+    try {
+    console.log('CONNECTING TO MONGO');
+    await connectMongo();
+    console.log('CONNECTED TO MONGO');
+
+    const storage = await Storage.updateOne(
+        {name: req.body.oldName},
+        {$set: {name: req.body.newName}}
+        );
+
+    res.json({ storage });
+    } catch (error) {
+    console.log(error);
+    res.json({ error });
+    }
+}
+
 const storageController = {
     addStorage,
     addFoodItemToStorage,
     getAllStorage,
     getStorageByName,
-    deleteStorageByName
+    deleteStorageByName,
+    updateStorageNameByName
 }
 
 export default storageController;
