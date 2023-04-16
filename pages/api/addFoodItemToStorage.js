@@ -1,2 +1,2 @@
 import storageController from "../../controllers/storageController";
-export default storageController.addStorage;
+export default storageController.addFoodItemToStorage;

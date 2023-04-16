@@ -1,11 +1,5 @@
 import { Schema, model, models } from 'mongoose';
 
-// {
-//   "name": "cheese",
-//   "expirationDate": "2024-04-20",
-//   "quantity": 2
-// }
-
 const foodItemSchema = new Schema({
   name: {
     type: String,
@@ -17,6 +11,10 @@ const foodItemSchema = new Schema({
   },
   quantity:{
     type: Number,
+    required: true
+  },
+  unit:{
+    type: String,
     required: true
   },
 });

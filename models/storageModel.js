@@ -1,9 +1,5 @@
 import { Schema, model, models } from 'mongoose';
 
-// {
-//   "name": "fridge"
-// }
-
 const storageSchema = new Schema({
   name: {
     type: String,
