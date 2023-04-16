@@ -98,11 +98,31 @@ async function getStorageByName(req, res) {
     }
 }
 
+async function deleteStorageByName(req, res) {
+    //Request should look like this:
+    // {
+    //   "name": "fridge"
+    // }
+    try {
+    console.log('CONNECTING TO MONGO');
+    await connectMongo();
+    console.log('CONNECTED TO MONGO');
+
+    const storage = await Storage.deleteOne({name: req.body.name});
+
+    res.json({ storage });
+    } catch (error) {
+    console.log(error);
+    res.json({ error });
+    }
+}
+
 const storageController = {
     addStorage,
     addFoodItemToStorage,
     getAllStorage,
-    getStorageByName
+    getStorageByName,
+    deleteStorageByName
 }
 
 export default storageController;
