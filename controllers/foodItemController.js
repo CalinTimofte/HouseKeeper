@@ -22,10 +22,10 @@ async function addFoodItem(req, res) {
     console.log('CONNECTED TO MONGO');
 
     console.log('CREATING DOCUMENT');
-    const test = await FoodItem.create(req.body);
+    const newFoodItem = await FoodItem.create(req.body);
     console.log('CREATED DOCUMENT');
 
-    res.json({ test });
+    res.json({ newFoodItem });
     } catch (error) {
     console.log(error);
     res.json({ error });

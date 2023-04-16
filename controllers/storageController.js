@@ -17,10 +17,10 @@ async function addStorage(req, res) {
     console.log('CONNECTED TO MONGO');
 
     console.log('CREATING DOCUMENT');
-    const test = await Storage.create(req.body);
+    const newStorage = await Storage.create(req.body);
     console.log('CREATED DOCUMENT');
 
-    res.json({ test });
+    res.json({ newStorage });
     } catch (error) {
     console.log(error);
     res.json({ error });
