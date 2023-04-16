@@ -65,10 +65,42 @@ async function getFoodItemByName(req, res) {
     res.json({ error });
     }
 }
+
+async function updateFoodItemByName(req, res) {
+    //Request should look like this:
+    // {
+    //  "oldName": "milk",
+    //  "updatedItem":
+    //  {
+    //     "name": "eggs",
+    //     "expirationDate": "2024-04-20",
+    //     "quantity": 6,
+    //     "unit": "piece"
+    //   }
+    // }
+    try {
+    console.log('CONNECTING TO MONGO');
+    await connectMongo();
+    console.log('CONNECTED TO MONGO');
+
+    const foodItem = await FoodItem.findOneAndReplace(
+        {name: req.body.oldName},
+        req.body.updatedItem
+        );
+
+    res.json({ foodItem });
+    } catch (error) {
+    console.log(error);
+    res.json({ error });
+    }
+}
+
+
 let foodItemController = {
     addFoodItem,
     getAllFoodItems,
-    getFoodItemByName
+    getFoodItemByName,
+    updateFoodItemByName
 }
 
 export default foodItemController;
