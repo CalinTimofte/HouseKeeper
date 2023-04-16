@@ -1,5 +1,9 @@
 import { Schema, model, models } from 'mongoose';
 
+// {
+//   "name": "fridge"
+// }
+
 const storageSchema = new Schema({
   name: {
     type: String,
@@ -8,6 +12,6 @@ const storageSchema = new Schema({
   foodItemIds: [{type: Schema.Types.ObjectID, ref: 'foodItem'}]
 });
 
-const storage = models.storage || model('storage', storageSchema);
+const Storage = models.storage || model('storage', storageSchema);
 
-export default storage;
+export default Storage;

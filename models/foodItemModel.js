@@ -1,5 +1,11 @@
 import { Schema, model, models } from 'mongoose';
 
+// {
+//   "name": "cheese",
+//   "expirationDate": "2024-04-20",
+//   "quantity": 2
+// }
+
 const foodItemSchema = new Schema({
   name: {
     type: String,
@@ -13,9 +19,8 @@ const foodItemSchema = new Schema({
     type: Number,
     required: true
   },
-  storageId: {type: Schema.Types.ObjectID, ref: 'Storage'}
 });
 
-const foodItem = models.foodItem || model('foodItem', foodItemSchema);
+const FoodItem = models.foodItem || model('foodItem', foodItemSchema);
 
-export default foodItem;
+export default FoodItem;
