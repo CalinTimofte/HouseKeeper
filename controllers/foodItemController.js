@@ -32,8 +32,43 @@ async function addFoodItem(req, res) {
     }
 }
 
+async function getAllFoodItems(req, res) {
+    try {
+    console.log('CONNECTING TO MONGO');
+    await connectMongo();
+    console.log('CONNECTED TO MONGO');
+
+    const foodItems = await FoodItem.find({});
+
+    res.json({ foodItems });
+    } catch (error) {
+    console.log(error);
+    res.json({ error });
+    }
+}
+
+async function getFoodItemByName(req, res) {
+    //Request should look like this:
+    // {
+    //   "name": "milk"
+    // }
+    try {
+    console.log('CONNECTING TO MONGO');
+    await connectMongo();
+    console.log('CONNECTED TO MONGO');
+
+    const foodItem = await FoodItem.findOne({name: req.body.name});
+
+    res.json({ foodItem });
+    } catch (error) {
+    console.log(error);
+    res.json({ error });
+    }
+}
 let foodItemController = {
-    addFoodItem
+    addFoodItem,
+    getAllFoodItems,
+    getFoodItemByName
 }
 
 export default foodItemController;
