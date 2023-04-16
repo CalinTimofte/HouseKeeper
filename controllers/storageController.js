@@ -98,6 +98,25 @@ async function getStorageByName(req, res) {
     }
 }
 
+async function getAllFoodInStorageByName(req, res) {
+    //Request should look like this:
+    // {
+    //   "name": "fridge"
+    // }
+    try {
+    console.log('CONNECTING TO MONGO');
+    await connectMongo();
+    console.log('CONNECTED TO MONGO');
+    const storage = await Storage.findOne({name: req.body.name});
+    const foodArray = await FoodItem.find({_id: {$in: storage.foodItemIds}});
+
+    res.json({ foodArray });
+    } catch (error) {
+    console.log(error);
+    res.json({ error });
+    }
+}
+
 async function deleteStorageByName(req, res) {
     //Request should look like this:
     // {
@@ -146,7 +165,8 @@ const storageController = {
     getAllStorage,
     getStorageByName,
     deleteStorageByName,
-    updateStorageNameByName
+    updateStorageNameByName,
+    getAllFoodInStorageByName
 }
 
 export default storageController;
