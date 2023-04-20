@@ -111,7 +111,7 @@ async function getSotrageThatContainsFoodItem(req, res) {
         console.log('CONNECTED TO MONGO');    
         
         const foodItem = await FoodItem.findOne({name: req.body.foodItem});
-        const storage = await Storage.find({foodItemIds: foodItem._id})
+        const storage = await Storage.find({foodItemIds: foodItem._id});
 
     res.json({ storage });
     } catch (error) {

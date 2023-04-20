@@ -100,7 +100,7 @@ async function updateFoodItemByName(req, res) {
 async function deleteFoodItem(req, res) {
     //Request should look like this:
     // {
-    //  "foodItem": "milk"
+    //  "name": "milk"
     // }
     try {
     console.log('CONNECTING TO MONGO');
@@ -109,24 +109,13 @@ async function deleteFoodItem(req, res) {
 
     // First, remove the foodItem ID from the storage where it is contained, 
     // then delete the food item itself
-    Storage.findOne({name: req.body.storage})
-    .then((storage) => {
-        console.log(storage)
-        FoodItem.findOne({name: req.body.foodItem})
-        .then((foodItem) => {
-            console.log(foodItem);
-            Storage.updateOne({name: storage.name}, {$pullAll: {foodItemIds: [{_id: foodItem._id}]}})
-            .catch(function (err) {
-                console.log(err);
-              });
-        })
-        .catch(function (err) {
-            console.log(err);
-          });
+    FoodItem.findOne({name: req.body.name})
+    .then((foodItem) => {
+        Storage.find({foodItemIds: foodItem._id})
+        .then((storage) => {Storage.updateOne({name: storage.name}, {$pullAll: {foodItemIds: [{_id: foodItem._id}]}})})
+        .then (()=>{FoodItem.deleteOne({name: foodItem.name})})
     })
-    .catch(function (err) {
-        console.log(err);
-      });
+    
 
     res.json({  });
     } catch (error) {
@@ -140,7 +129,8 @@ let foodItemController = {
     addFoodItem,
     getAllFoodItems,
     getFoodItemByName,
-    updateFoodItemByName
+    updateFoodItemByName,
+    deleteFoodItem
 }
 
 export default foodItemController;
