@@ -1,5 +1,7 @@
 import connectMongo from '../utils/connectMongo';
 import FoodItem from '../models/foodItemModel';
+import Storage from '../models/storageModel';
+import storageController from "./storageController";
 
 /**
  * @param {import('next').NextApiRequest} req
@@ -95,12 +97,40 @@ async function updateFoodItemByName(req, res) {
     }
 }
 
+async function deleteFoodItem(req, res) {
+    //Request should look like this:
+    // {
+    //  "name": "milk"
+    // }
+    try {
+    console.log('CONNECTING TO MONGO');
+    await connectMongo();
+    console.log('CONNECTED TO MONGO');
+
+    // First, remove the foodItem ID from the storage where it is contained, 
+    // then delete the food item itself
+    FoodItem.findOne({name: req.body.name})
+    .then((foodItem) => {
+        Storage.find({foodItemIds: foodItem._id})
+        .then((storage) => {Storage.updateOne({name: storage.name}, {$pullAll: {foodItemIds: [{_id: foodItem._id}]}})})
+        .then (()=>{FoodItem.deleteOne({name: foodItem.name})})
+    })
+    
+
+    res.json({  });
+    } catch (error) {
+    console.log(error);
+    res.json({ error });
+    }
+}
+
 
 let foodItemController = {
     addFoodItem,
     getAllFoodItems,
     getFoodItemByName,
-    updateFoodItemByName
+    updateFoodItemByName,
+    deleteFoodItem
 }
 
 export default foodItemController;
