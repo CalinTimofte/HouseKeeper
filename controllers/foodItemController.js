@@ -109,14 +109,10 @@ async function deleteFoodItem(req, res) {
 
     // First, remove the foodItem ID from the storage where it is contained, 
     // then delete the food item itself
-    FoodItem.findOne({name: req.body.name})
-    .then((foodItem) => {
-        Storage.find({foodItemIds: foodItem._id})
-        .then((storage) => {Storage.updateOne({name: storage.name}, {$pullAll: {foodItemIds: [{_id: foodItem._id}]}})})
-        .then (()=>{FoodItem.deleteOne({name: foodItem.name})})
-    })
-    
-
+    const foodItem = await FoodItem.findOne({name: req.body.name});
+    const storage = await Storage.findOne({foodItemIds: foodItem._id});
+    await Storage.updateOne({name: storage.name}, {$pullAll: {foodItemIds: [{_id: foodItem._id}]}})
+    await FoodItem.deleteOne({name: foodItem.name});
     res.json({  });
     } catch (error) {
     console.log(error);
