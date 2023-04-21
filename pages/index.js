@@ -19,7 +19,7 @@ export default function Home() {
         </p>
 
         <div className={styles.grid}>
-          <a href="/fridge" className={styles.card}>
+          <a href="/storage" className={styles.card}>
             <h3>Your Fridge and Pantry &rarr;</h3>
             <p>See ingredients in your fridge and pantry and their expiry date.</p>
           </a>
