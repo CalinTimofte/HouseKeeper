@@ -3,13 +3,9 @@ import styles from '../styles/Home.module.scss';
 import Link from 'next/link'
 
 export async function getStaticProps() {
-    // Call an external API endpoint to get posts.
-    // You can use any data fetching library
     const res = await fetch('http://localhost:3000/api/getAllStorage')
     const storages = await res.json()
     
-    // By returning { props: { posts } }, the Blog component
-    // will receive `posts` as a prop at build time
     return {
         props: {
             storages,
