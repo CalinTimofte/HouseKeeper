@@ -15,9 +15,13 @@ async function addFoodItem(req, res) {
     //     "name": "eggs",
     //     "expirationDate": "2024-04-20",
     //     "quantity": 6,
-    //     "unit": "piece"
+    //     "unit": "piece",
+    //     "price": "3.5",
+    //     "from": "Jumbo"
     //   }
     // Unit can be piece, g, ml
+    // price can be omitted, it defaults to null
+    // from can be omitted, it defaults to Jumbo
     try {
     console.log('CONNECTING TO MONGO');
     await connectMongo();

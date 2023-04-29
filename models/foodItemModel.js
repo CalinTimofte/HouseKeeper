@@ -18,6 +18,14 @@ const foodItemSchema = new Schema({
     type: String,
     required: true
   },
+  price:{
+    type: Number,
+    default: null,
+  },
+  from:{
+    type: String,
+    default: "Jumbo",
+  }
 });
 
 const FoodItem = models.foodItem || model('foodItem', foodItemSchema);
