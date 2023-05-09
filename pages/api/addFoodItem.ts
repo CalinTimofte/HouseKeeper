@@ -8,5 +8,5 @@
     //   }
     // Unit can be piece, g, ml
 
-import foodItemController from "../../controllers/foodItemController";
-export default foodItemController.addFoodItemAPIFunc;
+import {APIfoodItemController} from "../../controllers/foodItemController";
+export default APIfoodItemController.addFoodItemAPIFunc;

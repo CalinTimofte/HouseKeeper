@@ -1,6 +1,6 @@
 import connectMongo from '../utils/connectMongo';
 import Storage from '../models/storageModel';
-import foodItemController from "./foodItemController";
+import {foodItemController} from "./foodItemController";
 
 
 /**
@@ -9,7 +9,7 @@ import foodItemController from "./foodItemController";
  */
 
 // Functions defined here for foodItems have two versions, one
-// just for the DB action, and another one to be used late byy a Next.js API
+// just for the DB action, and another one to be used later by a Next.js API
 
 // Connect to DB
 async function connectDB(){
@@ -139,7 +139,7 @@ async function getStorageByNameAPIFunc(req, res) {
 
 async function getSotrageThatContainsFoodItem(foodItemName) {
     try {
-        const foodItem = await foodItemController.getFoodItemByName(fooditemName);
+        const foodItem = await foodItemController.getFoodItemByName(foodItemName);
         const storage = await Storage.find({foodItemIds: foodItem._id});
         return storage;
     } catch (error) {
@@ -253,27 +253,28 @@ async function deleteFoodItemFromStorageAPIFunc(req, res) {
 
 
 
-const storageController = {
+export const storageController = {
     addStorage,
-    addStorageAPIFunc,
     addFoodItemToStorage,
-    addFoodItemToStorageAPIFunc,
     getAllStorage,
-    getAllStorageAPIFunc,
     getStorageByFoodItemId,
     getStorageByName,
-    getStorageByNameAPIFunc,
     deleteStorage,
-    deleteStorageAPIFunc,
     removeFoodItemFromStorage,
     updateStorageName,
-    updateStorageNameAPIFunc,
     getAllFoodInStorage,
-    getAllFoodInStorageAPIFunc,
     deleteFoodItemFromStorage,
-    deleteFoodItemFromStorageAPIFunc,
     getSotrageThatContainsFoodItem,
-    getSotrageThatContainsFoodItemAPIFunc
 }
 
-export default storageController;
+export const APIstorageController = {
+    addStorageAPIFunc,
+    addFoodItemToStorageAPIFunc,
+    getAllStorageAPIFunc,
+    getStorageByNameAPIFunc,
+    deleteStorageAPIFunc,
+    updateStorageNameAPIFunc,
+    getAllFoodInStorageAPIFunc,
+    deleteFoodItemFromStorageAPIFunc,
+    getSotrageThatContainsFoodItemAPIFunc
+}

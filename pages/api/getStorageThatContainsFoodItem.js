@@ -1,7 +1,7 @@
 //Request should look like this:
     // {
-    //   "name": "fridge"
+    //   "foodItem": "milk"
     // }
 
 import {APIstorageController} from "../../controllers/storageController";
-export default APIstorageController.getStorageByNameAPIFunc;
+export default APIstorageController.getSotrageThatContainsFoodItemAPIFunc;

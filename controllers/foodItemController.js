@@ -1,6 +1,6 @@
 import connectMongo from '../utils/connectMongo';
 import FoodItem from '../models/foodItemModel';
-import storageController from "./storageController";
+import {storageController} from "./storageController";
 
 /**
  * @param {import('next').NextApiRequest} req
@@ -8,7 +8,7 @@ import storageController from "./storageController";
  */
 
 // Functions defined here for foodItems have two versions, one
-// just for the DB action, and another one to be used late byy a Next.js API
+// just for the DB action, and another one to be used later by a Next.js API
 
 // Connect to DB
 async function connectDB(){
@@ -114,7 +114,7 @@ async function updateFoodItemByName(oldName, updatedObj) {
 
 async function updateFoodItemByNameAPIFunc(req, res) {
     try {
-    const foodItem = await FoodItem.updateFoodItemByName(req.body.oldName, req.body.updatedItem);
+    const foodItem = await updateFoodItemByName(req.body.oldName, req.body.updatedItem);
     res.json({ foodItem });
     } catch (error) {
     console.log(error);
@@ -149,18 +149,19 @@ async function deleteFoodItemAPIFunc(req, res) {
 }
 
 // TODO: The exported object could be split into API only funcitons and normal funcitons
-let foodItemController = {
+export const foodItemController = {
     addFoodItem,
-    addFoodItemAPIFunc,
     getAllFoodItemsFromArray,
     getAllFoodItems,
-    getAllFoodItemsAPIFunc,
     getFoodItemByName,
-    getFoodItemByNameAPIFunc,
     updateFoodItemByName,
-    updateFoodItemByNameAPIFunc,
-    deleteFoodItem,
-    deleteFoodItemAPIFunc
+    deleteFoodItem
 }
 
-export default foodItemController;
+export const APIfoodItemController = {
+    addFoodItemAPIFunc,
+    getAllFoodItemsAPIFunc,
+    getFoodItemByNameAPIFunc,
+    updateFoodItemByNameAPIFunc,
+    deleteFoodItemAPIFunc
+}

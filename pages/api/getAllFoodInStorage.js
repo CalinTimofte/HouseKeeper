@@ -3,5 +3,5 @@
     //   "name": "fridge"
     // }
 
-import storageController from "../../controllers/storageController";
-export default storageController.getAllFoodInStorageAPIFunc;
+import {APIstorageController} from "../../controllers/storageController";
+export default APIstorageController.getAllFoodInStorageAPIFunc;

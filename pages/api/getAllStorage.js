@@ -1,2 +1,2 @@
-import storageController from "../../controllers/storageController";
-export default storageController.getAllStorageAPIFunc;
+import {APIstorageController} from "../../controllers/storageController";
+export default APIstorageController.getAllStorageAPIFunc;

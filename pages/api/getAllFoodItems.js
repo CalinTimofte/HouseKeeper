@@ -1,2 +1,2 @@
-import foodItemController from "../../controllers/foodItemController";
-export default foodItemController.getAllFoodItemsAPIFunc;
+import {APIfoodItemController} from "../../controllers/foodItemController";
+export default APIfoodItemController.getAllFoodItemsAPIFunc;

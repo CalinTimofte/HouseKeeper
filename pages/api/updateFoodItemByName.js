@@ -10,5 +10,5 @@
     //   }
     // }
 
-import foodItemController from "../../controllers/foodItemController";
-export default foodItemController.updateFoodItemByNameAPIFunc;
+import {APIfoodItemController} from "../../controllers/foodItemController";
+export default APIfoodItemController.updateFoodItemByNameAPIFunc;

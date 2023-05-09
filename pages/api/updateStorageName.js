@@ -4,5 +4,5 @@
     //  "newName": "fridgeroni"
     // }
 
-import storageController from "../../controllers/storageController";
-export default storageController.updateStorageNameAPIFunc;
+import {APIstorageController} from "../../controllers/storageController";
+export default APIstorageController.updateStorageNameAPIFunc;
