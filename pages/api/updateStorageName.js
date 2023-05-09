@@ -1,7 +1,8 @@
 //Request should look like this:
     // {
-    //   "name": "fridge"
+    //  "oldName": "fridge",
+    //  "newName": "fridgeroni"
     // }
 
 import storageController from "../../controllers/storageController";
-export default storageController.getStorageByNameAPIFunc;
+export default storageController.updateStorageNameAPIFunc;

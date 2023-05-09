@@ -4,4 +4,4 @@
     // }
 
 import storageController from "../../controllers/storageController";
-export default storageController.getStorageByNameAPIFunc;
+export default storageController.getAllFoodInStorageAPIFunc;

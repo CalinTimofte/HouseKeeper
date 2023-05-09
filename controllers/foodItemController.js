@@ -1,6 +1,5 @@
 import connectMongo from '../utils/connectMongo';
 import FoodItem from '../models/foodItemModel';
-import Storage from '../models/storageModel';
 import storageController from "./storageController";
 
 /**
@@ -12,7 +11,6 @@ import storageController from "./storageController";
 // just for the DB action, and another one to be used late byy a Next.js API
 
 // Connect to DB
-
 async function connectDB(){
 try{
     console.log('CONNECTING TO MONGO');
@@ -23,7 +21,6 @@ catch (error){
     console.log(error)
 }
 }
-
 // This function should be called every time functionality of the controller is invoked
 // Maybe this could be optimized somehow else, TBD
 connectDB();
@@ -69,6 +66,16 @@ async function getAllFoodItemsAPIFunc(req, res) {
     } catch (error) {
     console.log(error);
     res.json({ error });
+    }
+}
+
+// Fetch all FoodItems in a id array
+async function getAllFoodItemsFromArray(idArray) {
+    try {
+    const foodItems = await FoodItem.find({_id: {$in: idArray}});
+    return foodItems
+    } catch (error) {
+    console.log(error);
     }
 }
 
@@ -122,8 +129,8 @@ async function deleteFoodItem(name) {
     // then delete the food item itself.
     // To get the handle for the storage that the FoodItem resides in, we first need the FoodItem id
     const foodItem = await getFoodItemByName(name);
-    const storage = await Storage.findOne({foodItemIds: foodItem._id});
-    await Storage.updateOne({name: storage.name}, {$pullAll: {foodItemIds: [{_id: foodItem._id}]}})
+    const storage = await storageController.getStorageByFoodItemId(foodItem._id);
+    await storageController.removeFoodItemFromStorage(storage.name, foodItem._id);
     await FoodItem.deleteOne({name: foodItem.name});
     return ("Deletion successful")
     } catch (error) {
@@ -133,7 +140,7 @@ async function deleteFoodItem(name) {
 
 async function deleteFoodItemAPIFunc(req, res) {
     try {
-    const result = await deleteFoodItem({name: foodItem.name});
+    const result = await deleteFoodItem({name: req.body.name});
     res.json({ result });
     } catch (error) {
     console.log(error);
@@ -145,6 +152,7 @@ async function deleteFoodItemAPIFunc(req, res) {
 let foodItemController = {
     addFoodItem,
     addFoodItemAPIFunc,
+    getAllFoodItemsFromArray,
     getAllFoodItems,
     getAllFoodItemsAPIFunc,
     getFoodItemByName,
