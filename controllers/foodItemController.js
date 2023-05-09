@@ -130,7 +130,8 @@ async function deleteFoodItem(name) {
     // To get the handle for the storage that the FoodItem resides in, we first need the FoodItem id
     const foodItem = await getFoodItemByName(name);
     const storage = await storageController.getStorageByFoodItemId(foodItem._id);
-    await storageController.removeFoodItemFromStorage(storage.name, foodItem._id);
+    if (storage !== null)
+        await storageController.removeFoodItemFromStorage(storage.name, foodItem._id);
     await FoodItem.deleteOne({name: foodItem.name});
     return ("Deletion successful")
     } catch (error) {
@@ -140,7 +141,7 @@ async function deleteFoodItem(name) {
 
 async function deleteFoodItemAPIFunc(req, res) {
     try {
-    const result = await deleteFoodItem({name: req.body.name});
+    const result = await deleteFoodItem(req.body.name);
     res.json({ result });
     } catch (error) {
     console.log(error);

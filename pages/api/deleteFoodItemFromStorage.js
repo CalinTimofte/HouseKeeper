@@ -4,5 +4,5 @@
     //  "foodItem": "milk"
     // }
 
-import storageController from "../../controllers/storageController";
-export default storageController.deleteFoodItemFromStorageAPIFunc;
+import {APIstorageController} from "../../controllers/storageController";
+export default APIstorageController.deleteFoodItemFromStorageAPIFunc;

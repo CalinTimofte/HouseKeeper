@@ -3,5 +3,5 @@
     //  "name": "milk"
     // }
 
-import foodItemController from "../../controllers/foodItemController";
-export default foodItemController.deleteFoodItemAPIFunc;
+import {APIfoodItemController} from "../../controllers/foodItemController";
+export default APIfoodItemController.deleteFoodItemAPIFunc;

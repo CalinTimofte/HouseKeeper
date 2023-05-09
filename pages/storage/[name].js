@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  const res = await fetch('http://localhost:3000/api/getAllFoodInStorageByName', {
+  const res = await fetch('http://localhost:3000/api/getAllFoodInStorage', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
