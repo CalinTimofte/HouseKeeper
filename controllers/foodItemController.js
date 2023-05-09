@@ -8,8 +8,12 @@ import storageController from "./storageController";
  * @param {import('next').NextApiResponse} res
  */
 
+// Functions defined here for foodItems have two versions, one
+// just for the DB action, and another one to be used late byy a Next.js API
+
+// Connect to DB
+
 async function connectDB(){
-//Connect to DB
 try{
     console.log('CONNECTING TO MONGO');
     await connectMongo();
@@ -19,8 +23,12 @@ catch (error){
     console.log(error)
 }
 }
+
+// This function should be called every time functionality of the controller is invoked
+// Maybe this could be optimized somehow else, TBD
 connectDB();
 
+// FoodItem creation
 async function addFoodItem(foodItem) {
     try {
     console.log('CREATING DOCUMENT');
@@ -44,6 +52,7 @@ async function addFoodItemAPIFunc(req, res) {
     }
 }
 
+// Fetch all foodItems
 async function getAllFoodItems() {
     try {
     const foodItems = await FoodItem.find({});
@@ -63,18 +72,19 @@ async function getAllFoodItemsAPIFunc(req, res) {
     }
 }
 
-async function getFoodItemByName(req, res) {
-    //Request should look like this:
-    // {
-    //   "name": "milk"
-    // }
+// Fetch a specific foodItem
+async function getFoodItemByName(name) {
     try {
-    console.log('CONNECTING TO MONGO');
-    await connectMongo();
-    console.log('CONNECTED TO MONGO');
+    const foodItem = await FoodItem.findOne({name: name});
+    return foodItem
+    } catch (error) {
+    console.log(error);
+    }
+}
 
-    const foodItem = await FoodItem.findOne({name: req.body.name});
-
+async function getFoodItemByNameAPIFunc(req, res) {
+    try {
+    const foodItem = await getFoodItemByName(req.body.name);
     res.json({ foodItem });
     } catch (error) {
     console.log(error);
@@ -82,28 +92,22 @@ async function getFoodItemByName(req, res) {
     }
 }
 
-async function updateFoodItemByName(req, res) {
-    //Request should look like this:
-    // {
-    //  "oldName": "milk",
-    //  "updatedItem":
-    //  {
-    //     "name": "eggs",
-    //     "expirationDate": "2024-04-20",
-    //     "quantity": 6,
-    //     "unit": "piece"
-    //   }
-    // }
+// Update one FoodItem
+async function updateFoodItemByName(oldName, updatedObj) {
     try {
-    console.log('CONNECTING TO MONGO');
-    await connectMongo();
-    console.log('CONNECTED TO MONGO');
-
     const foodItem = await FoodItem.findOneAndReplace(
-        {name: req.body.oldName},
-        req.body.updatedItem
+        {name: oldName},
+        updatedObj
         );
+    return foodItem;
+    } catch (error) {
+    console.log(error);
+    }
+}
 
+async function updateFoodItemByNameAPIFunc(req, res) {
+    try {
+    const foodItem = await FoodItem.updateFoodItemByName(req.body.oldName, req.body.updatedItem);
     res.json({ foodItem });
     } catch (error) {
     console.log(error);
@@ -111,38 +115,44 @@ async function updateFoodItemByName(req, res) {
     }
 }
 
-async function deleteFoodItem(req, res) {
-    //Request should look like this:
-    // {
-    //  "name": "milk"
-    // }
+// Delete a foodItem
+async function deleteFoodItem(name) {
     try {
-    console.log('CONNECTING TO MONGO');
-    await connectMongo();
-    console.log('CONNECTED TO MONGO');
-
     // First, remove the foodItem ID from the storage where it is contained, 
-    // then delete the food item itself
-    const foodItem = await FoodItem.findOne({name: req.body.name});
+    // then delete the food item itself.
+    // To get the handle for the storage that the FoodItem resides in, we first need the FoodItem id
+    const foodItem = await getFoodItemByName(name);
     const storage = await Storage.findOne({foodItemIds: foodItem._id});
     await Storage.updateOne({name: storage.name}, {$pullAll: {foodItemIds: [{_id: foodItem._id}]}})
     await FoodItem.deleteOne({name: foodItem.name});
-    res.json({  });
+    return ("Deletion successful")
+    } catch (error) {
+    console.log(error);
+    }
+}
+
+async function deleteFoodItemAPIFunc(req, res) {
+    try {
+    const result = await deleteFoodItem({name: foodItem.name});
+    res.json({ result });
     } catch (error) {
     console.log(error);
     res.json({ error });
     }
 }
 
-
+// TODO: The exported object could be split into API only funcitons and normal funcitons
 let foodItemController = {
     addFoodItem,
     addFoodItemAPIFunc,
     getAllFoodItems,
     getAllFoodItemsAPIFunc,
     getFoodItemByName,
+    getFoodItemByNameAPIFunc,
     updateFoodItemByName,
-    deleteFoodItem
+    updateFoodItemByNameAPIFunc,
+    deleteFoodItem,
+    deleteFoodItemAPIFunc
 }
 
 export default foodItemController;
