@@ -35,7 +35,7 @@ async function addFoodItem(foodItem) {
 async function addFoodItemAPIFunc(req, res) {
     try {
     console.log('CREATING DOCUMENT');
-    const newFoodItem = addFoodItem(req.body);
+    const newFoodItem = await addFoodItem(req.body);
     console.log('CREATED DOCUMENT');
     res.json({ newFoodItem });
     } catch (error) {
@@ -44,14 +44,18 @@ async function addFoodItemAPIFunc(req, res) {
     }
 }
 
-async function getAllFoodItems(req, res) {
+async function getAllFoodItems() {
     try {
-    console.log('CONNECTING TO MONGO');
-    await connectMongo();
-    console.log('CONNECTED TO MONGO');
-
     const foodItems = await FoodItem.find({});
+    return foodItems
+    } catch (error) {
+    console.log(error);
+    }
+}
 
+async function getAllFoodItemsAPIFunc(req, res) {
+    try {
+    const foodItems = await getAllFoodItems();
     res.json({ foodItems });
     } catch (error) {
     console.log(error);
@@ -135,6 +139,7 @@ let foodItemController = {
     addFoodItem,
     addFoodItemAPIFunc,
     getAllFoodItems,
+    getAllFoodItemsAPIFunc,
     getFoodItemByName,
     updateFoodItemByName,
     deleteFoodItem
