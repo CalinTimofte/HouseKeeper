@@ -8,25 +8,35 @@ import storageController from "./storageController";
  * @param {import('next').NextApiResponse} res
  */
 
-async function addFoodItem(req, res) {
-    // Request format: 
-    //
-    // {
-    //     "name": "eggs",
-    //     "expirationDate": "2024-04-20",
-    //     "quantity": 6,
-    //     "unit": "piece"
-    //   }
-    // Unit can be piece, g, ml
-    try {
+async function connectDB(){
+//Connect to DB
+try{
     console.log('CONNECTING TO MONGO');
     await connectMongo();
     console.log('CONNECTED TO MONGO');
+}
+catch (error){
+    console.log(error)
+}
+}
+connectDB();
 
+async function addFoodItem(foodItem) {
+    try {
     console.log('CREATING DOCUMENT');
-    const newFoodItem = await FoodItem.create(req.body);
+    const newFoodItem = await FoodItem.create(foodItem);
     console.log('CREATED DOCUMENT');
+    return newFoodItem
+    } catch (error) {
+    console.log(error);
+    }
+}
 
+async function addFoodItemAPIFunc(req, res) {
+    try {
+    console.log('CREATING DOCUMENT');
+    const newFoodItem = addFoodItem(req.body);
+    console.log('CREATED DOCUMENT');
     res.json({ newFoodItem });
     } catch (error) {
     console.log(error);
@@ -123,6 +133,7 @@ async function deleteFoodItem(req, res) {
 
 let foodItemController = {
     addFoodItem,
+    addFoodItemAPIFunc,
     getAllFoodItems,
     getFoodItemByName,
     updateFoodItemByName,
