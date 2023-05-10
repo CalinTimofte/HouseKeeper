@@ -50,7 +50,7 @@
   margin-top: 3rem;
 }
 
-.card {
+.card, .button_danger, .button_create {
   margin: 1rem;
   flex-basis: 45%;
   padding: 1.5rem;
@@ -60,6 +60,20 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.button_danger:hover,
+.button_danger:focus,
+.button_danger:active {
+  color: red;
+  border-color: red;
+}
+
+.button_create:hover,
+.button_create:focus,
+.button_create:active {
+  color: green;
+  border-color: green;
 }
 
 .card:hover,
