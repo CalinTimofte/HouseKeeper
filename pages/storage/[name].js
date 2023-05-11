@@ -1,13 +1,13 @@
 import Head from 'next/head';
 import styles from '../../styles/Home.module.scss';
 import { useRouter } from 'next/router';
+import {storageController} from '../../controllers/storageController'
 
 
 // Generates storage/fridge, /pantry, /cabinet
 export async function getStaticPaths() {
-  const res = await fetch('http://localhost:3000/api/getAllStorage');
-  const storages = await res.json();
-  const paths = storages.storages.map((storage) => ({
+  let storages = await storageController.getAllStorage();
+  const paths = storages.map((storage) => ({
     params: { name: storage.name },
   }))
   return { paths, fallback: false }
