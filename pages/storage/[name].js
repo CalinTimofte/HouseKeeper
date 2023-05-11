@@ -40,18 +40,19 @@ const Storage = ({storage, storageName}) => {
   }
 
   const deleteButtonAction = async (foodItemName) => {
-    fetch('http://localhost:3000/api/deleteFoodItem', {
+    await fetch('http://localhost:3000/api/deleteFoodItem', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       name: foodItemName
-    })}).then(refreshData())
+    })});
+    refreshData();
   };
 
   const createButtonAction = async () => {
-    fetch('http://localhost:3000/api/addFoodItem', {
+    await fetch('http://localhost:3000/api/addFoodItem', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -61,9 +62,8 @@ const Storage = ({storage, storageName}) => {
         "expirationDate": "2024-04-20",
         "quantity": 1,
         "unit": "piece"
-    })})
-    .then(res => {
-      fetch('http://localhost:3000/api/addFoodItemToStorage', {
+    })});
+    await fetch('http://localhost:3000/api/addFoodItemToStorage', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,9 +71,8 @@ const Storage = ({storage, storageName}) => {
       body: JSON.stringify({
           "storage": storageName,
           "foodItem": "cornflakes"
-      })})
-    })
-    .then(refreshData())
+      })});
+    refreshData();
   };
 
   const storageListItems = storage.foodArray.map(item =>
@@ -85,7 +84,7 @@ const Storage = ({storage, storageName}) => {
   return (
       <div className={styles.container}>
           <Head>
-              <title>{storageName} | HouseKeeper App</title>
+              <title>{storageName +"| HouseKeeper App"}</title>
               <link rel="icon" href="/favicon.ico" />
           </Head>
 
