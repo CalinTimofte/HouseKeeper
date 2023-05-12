@@ -1,10 +1,12 @@
 import Head from 'next/head';
-import styles from '../styles/Home.module.scss';
+import styles from '../../styles/Home.module.scss';
 import Link from 'next/link'
+import {storageController} from '../../controllers/storageController'
+
 
 export async function getStaticProps() {
-    const res = await fetch('http://localhost:3000/api/getAllStorage')
-    const storages = await res.json()
+    const res = await storageController.getAllStorage();
+    const storages =  JSON.stringify(res);
     
     return {
         props: {
@@ -14,7 +16,8 @@ export async function getStaticProps() {
 }
 
 export default function Storage({storages}) {
-    const storageListItems = storages.storages.map(item =>
+    const storageSpaces = JSON.parse(storages);
+    const storageListItems = storageSpaces.map(item =>
         <li key={item.id} className={styles.card}>
             {/* The link below has backticks */}
             <Link href={`/storage/${item.name}`}><h3>{item.name}</h3></Link>

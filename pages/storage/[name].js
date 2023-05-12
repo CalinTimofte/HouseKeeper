@@ -1,29 +1,20 @@
 import Head from 'next/head';
 import styles from '../../styles/Home.module.scss';
-import { useRouter } from 'next/router';
 import {storageController} from '../../controllers/storageController'
-
+import React, {useState, useEffect} from 'react';
 
 // Generates storage/fridge, /pantry, /cabinet
 export async function getStaticPaths() {
   let storages = await storageController.getAllStorage();
   const paths = storages.map((storage) => ({
-    params: { name: storage.name },
+    params: { name: storage.name},
   }))
   return { paths, fallback: false }
 }
 
 export async function getStaticProps(context) {
-  const res = await fetch('http://localhost:3000/api/getAllFoodInStorage', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name: context.params.name
-    })})
-  const storage = await res.json()
-  
+  let storage = await storageController.getAllFoodInStorage(context.params.name);
+  storage = JSON.stringify(storage);
   return {
       props: {
         storageName: context.params.name,
@@ -34,9 +25,28 @@ export async function getStaticProps(context) {
 
 
 const Storage = ({storage, storageName}) => {
-  const router = useRouter();
-  const refreshData = () => {
-    router.replace(router.asPath);
+  const [food, setFood] = useState(JSON.parse(storage));
+  // useEffect(() => {
+  //   getFoodArr().then(res => {console.log(res)});
+  // })
+
+  const getFoodArr = async() => {
+    const res = await fetch('http://localhost:3000/api/getAllFoodInStorage', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: storageName
+    })})
+    const reply = await res.json();
+    return reply;
+  }
+
+  const refreshData = async () => {
+    const newFoodArr = await getFoodArr();
+    console.log(newFoodArr);
+    setFood(newFoodArr);
   }
 
   const deleteButtonAction = async (foodItemName) => {
@@ -48,11 +58,11 @@ const Storage = ({storage, storageName}) => {
     body: JSON.stringify({
       name: foodItemName
     })});
-    refreshData();
+    await refreshData();
   };
 
   const createButtonAction = async () => {
-    await fetch('http://localhost:3000/api/addFoodItem', {
+    fetch('http://localhost:3000/api/addFoodItem', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -62,8 +72,7 @@ const Storage = ({storage, storageName}) => {
         "expirationDate": "2024-04-20",
         "quantity": 1,
         "unit": "piece"
-    })});
-    await fetch('http://localhost:3000/api/addFoodItemToStorage', {
+    })}).then(fetch('http://localhost:3000/api/addFoodItemToStorage', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,11 +80,10 @@ const Storage = ({storage, storageName}) => {
       body: JSON.stringify({
           "storage": storageName,
           "foodItem": "cornflakes"
-      })});
-    refreshData();
+      })})).then(refreshData());
   };
 
-  const storageListItems = storage.foodArray.map(item =>
+  const storageListItems = food.map(item =>
     <li key={item.id} className={styles.card}>
         <h3>{item.name}</h3>
         <h3 className={styles.button_danger} onClick={() => deleteButtonAction(item.name)}>- delete</h3>
@@ -96,8 +104,8 @@ const Storage = ({storage, storageName}) => {
               <ul className={styles.grid}>
                 {storageListItems}
               </ul>
-              <div className={styles.button_create}>
-                  <h3 onClick={createButtonAction}> + add food </h3>
+              <div onClick={createButtonAction} className={styles.button_create}>
+                  <h3> + add food </h3>
               </div>
           </main>
 
@@ -105,4 +113,5 @@ const Storage = ({storage, storageName}) => {
     )
 }
 
-export default Storage
+export default Storage;
+export const dynamic = 'force-dynamic';

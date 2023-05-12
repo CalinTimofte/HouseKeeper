@@ -101,7 +101,7 @@ async function getAllStorage() {
 async function getAllStorageAPIFunc(req, res) {
     try {
     const storages = await getAllStorage();
-    res.json({ storages });
+    res.json(storages);
     } catch (error) {
     console.log(error);
     res.json({ error });
@@ -171,7 +171,7 @@ async function getAllFoodInStorage(storageName) {
 async function getAllFoodInStorageAPIFunc(req, res) {
     try {
     const foodArray = await getAllFoodInStorage(req.body.name);    
-    res.json({ foodArray });
+    res.json(foodArray);
     } catch (error) {
     console.log(error);
     res.json({ error });
