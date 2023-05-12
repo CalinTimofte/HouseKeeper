@@ -13,27 +13,25 @@ import React, {useState, useEffect} from 'react';
 // }
 
 export async function getServerSideProps(context) {
-  const baseURL = process.env.SELF_URL;
   let storage = await storageController.getAllFoodInStorage(context.params.name);
   storage = JSON.stringify(storage);
   return {
       props: {
         storageName: context.params.name,
         storage,
-        baseURL
       },
   }
 }
 
 
-const Storage = ({storage, storageName, baseURL}) => {
+const Storage = ({storage, storageName}) => {
   const [food, setFood] = useState(JSON.parse(storage));
   // useEffect(() => {
   //   getFoodArr().then(res => {console.log(res)});
   // })
 
   const getFoodArr = async() => {
-    const res = await fetch(baseURL+'/api/getAllFoodInStorage', {
+    const res = await fetch('/api/getAllFoodInStorage', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -52,7 +50,7 @@ const Storage = ({storage, storageName, baseURL}) => {
   }
 
   const deleteButtonAction = async (foodItemName) => {
-    await fetch(baseURL+'/api/deleteFoodItem', {
+    await fetch('/api/deleteFoodItem', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -64,7 +62,7 @@ const Storage = ({storage, storageName, baseURL}) => {
   };
 
   const createButtonAction = async () => {
-    fetch(baseURL+'/api/addFoodItem', {
+    fetch('/api/addFoodItem', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -74,7 +72,7 @@ const Storage = ({storage, storageName, baseURL}) => {
         "expirationDate": "2024-04-20",
         "quantity": 1,
         "unit": "piece"
-    })}).then(fetch(baseURL+'/api/addFoodItemToStorage', {
+    })}).then(fetch('/api/addFoodItemToStorage', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
