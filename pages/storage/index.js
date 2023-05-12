@@ -4,7 +4,7 @@ import Link from 'next/link'
 import {storageController} from '../../controllers/storageController'
 
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const res = await storageController.getAllStorage();
     const storages =  JSON.stringify(res);
     
