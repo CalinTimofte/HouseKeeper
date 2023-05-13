@@ -14,7 +14,10 @@ import React, {useState, useEffect} from 'react';
 
 export async function getServerSideProps(context) {
   let storage = await storageController.getAllFoodInStorage(context.params.name);
-  storage = JSON.stringify(storage);
+  if (storage !== undefined)
+    storage = JSON.stringify(storage);
+  else
+    storage = "Page does not exist";
   return {
       props: {
         storageName: context.params.name,
@@ -25,10 +28,10 @@ export async function getServerSideProps(context) {
 
 
 const Storage = ({storage, storageName}) => {
+  if (storage === "Page does not exist")
+    return(<h1>{storage}</h1>)
+
   const [food, setFood] = useState(JSON.parse(storage));
-  // useEffect(() => {
-  //   getFoodArr().then(res => {console.log(res)});
-  // })
 
   const getFoodArr = async() => {
     const res = await fetch('/api/getAllFoodInStorage', {
