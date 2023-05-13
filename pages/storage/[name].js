@@ -46,10 +46,8 @@ const Storage = ({storage, storageName}) => {
     return reply;
   }
 
-  const refreshData = async () => {
-    const newFoodArr = await getFoodArr();
-    console.log(newFoodArr);
-    setFood(newFoodArr);
+  const refreshData = () => {
+    getFoodArr().then(res => {setFood(res)});
   }
 
   const deleteButtonAction = async (foodItemName) => {
@@ -61,29 +59,27 @@ const Storage = ({storage, storageName}) => {
     body: JSON.stringify({
       name: foodItemName
     })});
-    await refreshData();
+    refreshData();
   };
 
   const createButtonAction = async () => {
-    fetch('/api/addFoodItem', {
+    await fetch('/api/addNewFoodItemToStorage', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-        "name": "cornflakes",
-        "expirationDate": "2024-04-20",
-        "quantity": 1,
-        "unit": "piece"
-    })}).then(fetch('/api/addFoodItemToStorage', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          "storage": storageName,
-          "foodItem": "cornflakes"
-      })})).then(refreshData());
+        "storage": storageName,
+        "foodItem": {
+          "name": "cornflakes",
+          "expirationDate": "2024-04-20",
+          "quantity": 1,
+          "unit": "piece"}
+    })});
+    // This line of code is for "unclogging" database?
+    // Idk why it doesn't work without it tbh
+    await getFoodArr();
+    refreshData();
   };
 
   const storageListItems = food.map(item =>
@@ -107,7 +103,7 @@ const Storage = ({storage, storageName}) => {
               <ul className={styles.grid}>
                 {storageListItems}
               </ul>
-              <div onClick={createButtonAction} className={styles.button_create}>
+              <div onClick={() => createButtonAction()} className={styles.button_create}>
                   <h3> + add food </h3>
               </div>
           </main>

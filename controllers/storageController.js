@@ -88,6 +88,26 @@ async function addFoodItemToStorageAPIFunc(req, res) {
     }
 }
 
+async function addNewFoodItemToStorage(storageName, foodItem){
+    try {
+        await foodItemController.addFoodItem(foodItem);
+        await addFoodItemToStorage(storageName, foodItem.name);
+        return("Operation successful")
+        } catch (error) {
+        console.log(error);
+        }
+}
+
+async function addNewFoodItemToStorageAPIFunc(req, res) {
+    try {
+    const result = await addNewFoodItemToStorage(req.body.storage, req.body.foodItem)
+    res.json({ result });
+    } catch (error) {
+    console.log(error);
+    res.json({ error });
+    }
+}
+
 // Fetch all Storage objects
 async function getAllStorage() {
     try {
@@ -256,6 +276,7 @@ async function deleteFoodItemFromStorageAPIFunc(req, res) {
 export const storageController = {
     addStorage,
     addFoodItemToStorage,
+    addNewFoodItemToStorage,
     getAllStorage,
     getStorageByFoodItemId,
     getStorageByName,
@@ -270,6 +291,7 @@ export const storageController = {
 export const APIstorageController = {
     addStorageAPIFunc,
     addFoodItemToStorageAPIFunc,
+    addNewFoodItemToStorageAPIFunc,
     getAllStorageAPIFunc,
     getStorageByNameAPIFunc,
     deleteStorageAPIFunc,
