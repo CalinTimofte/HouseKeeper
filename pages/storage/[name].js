@@ -3,15 +3,6 @@ import styles from '../../styles/Home.module.scss';
 import {storageController} from '../../controllers/storageController'
 import React, {useState, useEffect} from 'react';
 
-// Generates storage/fridge, /pantry, /cabinet
-// export async function getStaticPaths() {
-//   let storages = await storageController.getAllStorage();
-//   const paths = storages.map((storage) => ({
-//     params: { name: storage.name},
-//   }))
-//   return { paths, fallback: false }
-// }
-
 export async function getServerSideProps(context) {
   let storage = await storageController.getAllFoodInStorage(context.params.name);
   if (storage !== undefined)
@@ -32,6 +23,21 @@ const Storage = ({storage, storageName}) => {
     return(<h1>{storage}</h1>)
 
   const [food, setFood] = useState(JSON.parse(storage));
+  const [newFoodItem, setNewFoodItem] = useState({
+    "name": "avocado",
+    "expirationDate": "2024-04-20",
+    "quantity": "1",
+    "unit": "piece"
+  })
+
+  let changeNewFoodItemField = (field, event) => {
+    setNewFoodItem({...newFoodItem, [field]:event.target.value});
+  }
+
+  let changeNewFoodItemName = (event) => changeNewFoodItemField("name", event);
+  let changeNewFoodItemExpiration = (event) => changeNewFoodItemField("expirationDate", event);
+  let changeNewFoodItemQuantity = (event) => changeNewFoodItemField("quantity", event);
+  let changeNewFoodItemUnit = (event) => changeNewFoodItemField("unit", event);
 
   const getFoodArr = async() => {
     const res = await fetch('/api/getAllFoodInStorage', {
@@ -70,11 +76,7 @@ const Storage = ({storage, storageName}) => {
     },
     body: JSON.stringify({
         "storage": storageName,
-        "foodItem": {
-          "name": "cornflakes",
-          "expirationDate": "2024-04-20",
-          "quantity": 1,
-          "unit": "piece"}
+        "foodItem": newFoodItem
     })});
     // This line of code is for "unclogging" database?
     // Idk why it doesn't work without it tbh
@@ -103,8 +105,34 @@ const Storage = ({storage, storageName}) => {
               <ul className={styles.grid}>
                 {storageListItems}
               </ul>
-              <div onClick={() => createButtonAction()} className={styles.button_create}>
-                  <h3> + add food </h3>
+              <div className={styles.card}>
+                Name: 
+                <input type="text"
+                value={newFoodItem.name}
+                onChange={changeNewFoodItemName} />
+                <br/>
+                
+                Expiration Date: 
+                <input type="text"
+                value={newFoodItem.expirationDate}
+                onChange={changeNewFoodItemExpiration} />
+                <br/>
+
+                Quantity: 
+                <input type="text"
+                value={newFoodItem.quantity}
+                onChange={changeNewFoodItemQuantity} />
+                <br/>
+                
+                Unit: 
+                <input type="text"
+                value={newFoodItem.unit}
+                onChange={changeNewFoodItemUnit} />
+                <br/>
+
+                <div onClick={() => createButtonAction()} className={styles.button_create}>
+                    <h3> + add food </h3>
+                </div>
               </div>
           </main>
 
