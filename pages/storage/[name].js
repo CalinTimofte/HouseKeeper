@@ -3,7 +3,17 @@ import styles from '../../styles/Home.module.scss';
 import {storageController} from '../../controllers/storageController'
 import React, {useState, useEffect} from 'react';
 
-export async function getServerSideProps(context) {
+// Generates storage/fridge, /pantry, /cabinet
+export async function getStaticPaths() {
+  let storages = await storageController.getAllStorage();
+  const paths = storages.map((storage) => ({
+    params: { name: storage.name},
+  }))
+  return { paths, fallback: false }
+}
+
+
+export async function getStaticProps(context) {
   let storage = await storageController.getAllFoodInStorage(context.params.name);
   if (storage !== undefined)
     storage = JSON.stringify(storage);
