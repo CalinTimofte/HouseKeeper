@@ -104,3 +104,20 @@
     flex-direction: column;
   }
 }
+
+.navbar {
+  padding: 20px;
+  align-items: flex-start;
+  display: flex;
+  a {
+    margin: 0 20px;
+  }
+}
+.inlineBlock {
+  display: inline-block;
+}
+.navbarButton {
+  width: 200px;
+  padding: 5px 10px;
+  height: 60px;
+}

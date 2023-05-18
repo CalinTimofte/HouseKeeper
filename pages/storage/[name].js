@@ -2,6 +2,7 @@ import Head from 'next/head';
 import styles from '../../styles/Home.module.scss';
 import {storageController} from '../../controllers/storageController'
 import React, {useState, useEffect} from 'react';
+import Navbar from "../../components/navbar";
 
 export async function getServerSideProps(context) {
   let storage = await storageController.getAllFoodInStorage(context.params.name);
@@ -92,6 +93,7 @@ const Storage = ({storage, storageName}) => {
 
   return (
       <div className={styles.container}>
+          <Navbar></Navbar>
           <Head>
               <title>{storageName +"| HouseKeeper App"}</title>
               <link rel="icon" href="/favicon.ico" />
