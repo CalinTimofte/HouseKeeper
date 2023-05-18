@@ -80,7 +80,7 @@ const Storage = ({storage, storageName}) => {
     })});
     // This line of code is for "unclogging" database?
     // Idk why it doesn't work without it tbh
-    await getFoodArr();
+    // await getFoodArr();
     refreshData();
   };
 

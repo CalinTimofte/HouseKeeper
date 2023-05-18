@@ -15,13 +15,15 @@ export async function getServerSideProps() {
     }
 }
 
-export default function Storage({storages}) {
+export default function StorageList({storages}) {
     const storageSpaces = JSON.parse(storages);
+
     const storageListItems = storageSpaces.map(item =>
         <li key={item.id} className={styles.card}>
             {/* The link below has backticks */}
             <Link href={`/storage/${item.name}`}><h3>{item.name}</h3></Link>
         </li>)
+
     return (
         <div className={styles.container}>
             <Head>
