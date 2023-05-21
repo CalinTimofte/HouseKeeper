@@ -109,8 +109,18 @@
   padding: 20px;
   align-items: flex-start;
   display: flex;
+  width: 100%;
+  padding: 0 25%;
+  background-color: rgba(0, 0, 0, 0.82);
+  border-bottom: 1px solid lightgrey;
   a {
     margin: 0 20px;
+    border: 0;
+    color: white;
+  }
+  a:hover {
+    color: lightgrey;
+    border: 0;
   }
 }
 .inlineBlock {
@@ -120,4 +130,5 @@
   width: 200px;
   padding: 5px 10px;
   height: 60px;
+  color:white;
 }

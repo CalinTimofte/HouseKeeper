@@ -1,9 +1,12 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.scss';
+import Navbar from "../components/navbar";
+import React from "react";
 
 export default function Home() {
   return (
     <div className={styles.container}>
+      <Navbar></Navbar>
       <Head>
         <title>HouseKeeper App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -55,8 +58,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel" className={styles.logo} />
+          Powered by Calin & Andreea
         </a>
       </footer>
 
